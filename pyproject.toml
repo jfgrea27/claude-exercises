@@ -12,6 +12,7 @@ books-api = { path = "books_api", editable = true }
 dev = [
     "pytest>=9.0.2",
     "pytest-asyncio>=1.3.0",
+    "pytest-cov>=6.0.0",
     "httpx>=0.27.0",
     "ruff>=0.8.0",
     "mypy>=1.13.0",
@@ -42,3 +43,15 @@ select = ["E", "F", "I", "N", "W", "UP"]
 python_version = "3.11"
 strict = true
 exclude = [".*test.*"]
+
+[tool.coverage.run]
+source = ["books_api/src/books_api"]
+omit = ["*/test/*", "*/__pycache__/*"]
+
+[tool.coverage.report]
+fail_under = 80
+show_missing = true
+exclude_lines = [
+    "pragma: no cover",
+    "if TYPE_CHECKING:",
+]

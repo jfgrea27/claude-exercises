@@ -14,9 +14,9 @@ serve:
 test *ARGS:
     pytest {{ARGS}}
 
-# Run tests with coverage
+# Run tests with coverage (fails if below 80%)
 test-cov:
-    pytest --cov=books_api --cov-report=term-missing
+    pytest --cov=books_api/src/books_api --cov-report=term-missing --cov-fail-under=80
 
 # Lint code
 lint:
@@ -31,5 +31,5 @@ fmt:
 typecheck:
     mypy books_api
 
-# Run all checks (lint, typecheck, test)
-check: lint typecheck test
+# Run all checks (lint, typecheck, test with coverage)
+check: lint typecheck test-cov
