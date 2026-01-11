@@ -33,3 +33,5 @@ typecheck:
 
 # Run all checks (lint, typecheck, test)
 check: lint typecheck test
+
+check-fmt: fmt check
