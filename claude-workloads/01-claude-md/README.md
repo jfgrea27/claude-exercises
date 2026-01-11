@@ -4,7 +4,9 @@
 
 Claude Code can automatically pull the repository context including tools it can use, core files, etc. by reading the contents of a `CLAUDE.md` file, as described in [claude-code-best-practices](https://www.anthropic.com/engineering/claude-code-best-practices).
 
-In our previous [00-basic-usage](../00-basic-usage/README.md), Claude Code did not run the linting and typing checks. Let's create a `Claude.md` file so that it can carry out specific workflows when updating code
+In our previous [00-basic-usage](../00-basic-usage/README.md), Claude Code did not run the linting and typing checks. Let's create a `Claude.md` file so that it can carry out specific workflows when updating code.
+
+We will visit the same feature as [00-basic-usage](../00-basic-usage/README.md), namely adding logging.
 
 1. Open Claude Code
 
@@ -23,26 +25,29 @@ Add more logging to books_api
 Claude Code output:
 
 ```
- I'll find the books_api code and add the logging you requested.
+I can see the logger is already set up. I'll add the logging statements to both files.
 ...
-Let me read the key files to understand the structure.
+Now I'll run typecheck and format as per the project instructions.
 ...
-Done. I've added logging to the books_api:
+Bash(just typecheck) # this is the type checking
+...
+Bash(just fmt) # this is the formating
+...
+ Done. I added logging to the books_api:
 
-  Info logging for requests (routes.py):
-  - All endpoints now log "request started" at the beginning
-  - All endpoints log "request completed" at the end (including "not found" cases)
+  Routes (routes.py): Info-level logging for request start/end
+  - GET /books, GET /books/{id}, POST /books, DELETE /books/{id}
 
-  Debug logging for DB interactions (db/books.py):
-  - get_all_books: logs query start and number of books retrieved
-  - get_book_by_id: logs query and whether book was found
-  - create_book: logs the data being created and the resulting book id
-  - update_book: logs the book id and update data
-  - delete_book: logs deletion attempts, successes, and failures
+  DB layer (db/books.py): Debug-level logging for all database operations
+  - get_all_books - query and result count
+  - get_book_by_id - query and found/not found
+  - create_book - input data and created id
+  - update_book - book id and update data
+  - delete_book - book id being deleted
 
-  Both files use the existing books_api logger. To see debug logs, you can pass logging.DEBUG to setup_logging() in server.py.
+  Typecheck passed and code was formatted.
 ```
 
-This completes the feature request as expected.
+This completes the feature request as expected and with the corresponding formatting.
 
-Annoyingly, the formatting is off and it didn't run any tests. So even though it did add the logging, we still need to manually check it passed the tests, etc. Could we improve this? Check out the next workload for answers :->.
+It is worth noting that since Claude Code has a limited context window size, the `CLAUDE.md` is part of this context window, and so make sure the file's content is succinct.

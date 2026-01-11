@@ -83,12 +83,8 @@ class TestDeleteBook:
         assert response.status_code == 404
 
     def test_delete_only_affects_target(self, client):
-        response1 = client.post(
-            "/books", json={"title": "Book 1", "author": "Author"}
-        )
-        response2 = client.post(
-            "/books", json={"title": "Book 2", "author": "Author"}
-        )
+        response1 = client.post("/books", json={"title": "Book 1", "author": "Author"})
+        response2 = client.post("/books", json={"title": "Book 2", "author": "Author"})
         book1_id = response1.json()["id"]
         book2_id = response2.json()["id"]
 
