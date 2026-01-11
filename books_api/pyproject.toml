@@ -1,0 +1,24 @@
+[project]
+name = "books-api"
+version = "0.1.0"
+description = "A simple books REST API"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi>=0.115.0",
+    "uvicorn>=0.32.0",
+    "sqlalchemy>=2.0.0",
+    "pydantic>=2.0.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build]
+sources = ["src"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/books_api"]
+
+[tool.hatch.build.targets.sdist]
+include = ["src/books_api"]

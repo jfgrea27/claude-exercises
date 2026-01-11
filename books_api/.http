@@ -1,0 +1,24 @@
+# 
+@host = localhost
+@port = 8000
+
+###  Get all books
+GET http://{{host}}:{{port}}/books
+
+### Get a book by ID
+
+GET http://{{host}}:{{port}}/books/1
+
+### Create a book
+POST http://{{host}}:{{port}}/books
+Content-Type: application/json
+
+{
+    "title": "The Great Gatsby",
+    "author": "F. Scott Fitzgerald",
+    "year": 1925,
+    "description": "A great book about the Great Gatsby"
+}
+
+### Delete a book
+DELETE http://{{host}}:{{port}}/books/1
