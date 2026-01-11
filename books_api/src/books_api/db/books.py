@@ -1,8 +1,11 @@
+import logging
 from typing import Any
 
 from sqlalchemy.orm import Session
 
 from books_api.models import Book
+
+logger = logging.getLogger("books_api")
 
 
 def get_all_books(db: Session) -> list[Book]:
@@ -30,9 +33,5 @@ def update_book(db: Session, book: Book, data: dict[str, Any]) -> Book:
 
 
 def delete_book(db: Session, book: Book) -> None:
-    try:
-        db.delete(book)
-        db.commit()
-    except Exception as e:
-        db.rollback()
-        raise e
+    db.delete(book)
+    db.commit()

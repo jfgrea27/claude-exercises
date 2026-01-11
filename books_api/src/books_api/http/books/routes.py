@@ -1,3 +1,5 @@
+import logging
+
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
@@ -10,6 +12,8 @@ from books_api.db import (
 from books_api.db import delete_book as db_delete_book
 from books_api.http.books.schemas import BookCreate, BookResponse
 from books_api.models import Book
+
+logger = logging.getLogger("books_api")
 
 router = APIRouter(prefix="/books", tags=["books"])
 
