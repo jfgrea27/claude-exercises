@@ -92,3 +92,54 @@ class TestDeleteBook:
 
         assert client.get(f"/books/{book1_id}").status_code == 404
         assert client.get(f"/books/{book2_id}").status_code == 200
+
+
+class TestPatchBook:
+    def test_patch_book_not_found(self, client):
+        response = client.patch("/books/999", json={"title": "Updated"})
+        assert response.status_code == 404
+        assert response.json()["detail"] == "Book not found"
+
+    def test_patch_single_field(self, client):
+        create_response = client.post(
+            "/books",
+            json={"title": "Original", "author": "Author", "year": 2020},
+        )
+        book_id = create_response.json()["id"]
+
+        response = client.patch(f"/books/{book_id}", json={"title": "Updated"})
+        assert response.status_code == 200
+        book = response.json()
+        assert book["title"] == "Updated"
+        assert book["author"] == "Author"
+        assert book["year"] == 2020
+
+    def test_patch_multiple_fields(self, client):
+        create_response = client.post(
+            "/books",
+            json={"title": "Original", "author": "Author"},
+        )
+        book_id = create_response.json()["id"]
+
+        response = client.patch(
+            f"/books/{book_id}",
+            json={"title": "New Title", "author": "New Author", "year": 2024},
+        )
+        assert response.status_code == 200
+        book = response.json()
+        assert book["title"] == "New Title"
+        assert book["author"] == "New Author"
+        assert book["year"] == 2024
+
+    def test_patch_empty_body(self, client):
+        create_response = client.post(
+            "/books",
+            json={"title": "Original", "author": "Author"},
+        )
+        book_id = create_response.json()["id"]
+
+        response = client.patch(f"/books/{book_id}", json={})
+        assert response.status_code == 200
+        book = response.json()
+        assert book["title"] == "Original"
+        assert book["author"] == "Author"

@@ -1,5 +1,5 @@
 import pytest
-from books_api.http.books.schemas import BookCreate, BookResponse
+from books_api.http.books.schemas import BookCreate, BookResponse, BookUpdate
 from pydantic import ValidationError
 
 
@@ -58,3 +58,29 @@ class TestBookResponse:
 
     def test_from_attributes_config(self):
         assert BookResponse.model_config["from_attributes"] is True
+
+
+class TestBookUpdate:
+    def test_all_fields_optional(self):
+        update = BookUpdate()
+        assert update.title is None
+        assert update.author is None
+        assert update.description is None
+        assert update.year is None
+
+    def test_partial_update(self):
+        update = BookUpdate(title="New Title")
+        assert update.title == "New Title"
+        assert update.author is None
+
+    def test_full_update(self):
+        update = BookUpdate(
+            title="Title",
+            author="Author",
+            description="Desc",
+            year=2024,
+        )
+        assert update.title == "Title"
+        assert update.author == "Author"
+        assert update.description == "Desc"
+        assert update.year == 2024

@@ -8,9 +8,10 @@ from books_api.db import (
     get_all_books,
     get_book_by_id,
     get_db,
+    update_book,
 )
 from books_api.db import delete_book as db_delete_book
-from books_api.http.books.schemas import BookCreate, BookResponse
+from books_api.http.books.schemas import BookCreate, BookResponse, BookUpdate
 from books_api.models import Book
 
 logger = logging.getLogger("books_api")
@@ -52,3 +53,17 @@ def delete_book(book_id: int, db: Session = Depends(get_db)) -> None:
         raise HTTPException(status_code=404, detail="Book not found")
     db_delete_book(db, book)
     logger.info("DELETE /books/%s - Completed request", book_id)
+
+
+@router.patch("/{book_id}", response_model=BookResponse)
+def patch_book(
+    book_id: int, book_update: BookUpdate, db: Session = Depends(get_db)
+) -> Book:
+    logger.info("PATCH /books/%s - Starting request", book_id)
+    book = get_book_by_id(db, book_id)
+    if book is None:
+        raise HTTPException(status_code=404, detail="Book not found")
+    update_data = {k: v for k, v in book_update.model_dump().items() if v is not None}
+    updated_book = update_book(db, book, update_data)
+    logger.info("PATCH /books/%s - Completed request", book_id)
+    return updated_book

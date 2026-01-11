@@ -20,5 +20,13 @@ Content-Type: application/json
     "description": "A great book about the Great Gatsby"
 }
 
+### Patch a book (partial update)
+PATCH http://{{host}}:{{port}}/books/1
+Content-Type: application/json
+
+{
+    "title": "The Great Gatsby - Updated"
+}
+
 ### Delete a book
 DELETE http://{{host}}:{{port}}/books/1
