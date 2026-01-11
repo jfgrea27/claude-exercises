@@ -68,6 +68,32 @@ class TestCreateBook:
         assert fetched is not None
         assert fetched.title == "Title"
 
+    def test_cannot_create_duplicate_book_with_same_title(self, db_session):
+        """Test duplicate book titles raise IntegrityError."""
+        # First book creation should succeed
+        book1 = create_book(
+            db_session, {"title": "The Great Gatsby", "author": "F. Scott Fitzgerald"}
+        )
+        assert book1.id is not None
+
+        # Attempting to create a second book with the same title should raise an error
+        from sqlalchemy.exc import IntegrityError
+
+        try:
+            create_book(
+                db_session,
+                {"title": "The Great Gatsby", "author": "Ernest Hemingway"},
+            )
+            assert False, "Expected IntegrityError but no exception was raised"
+        except IntegrityError:
+            # This is expected - duplicate titles should not be allowed
+            db_session.rollback()
+
+        # Verify only one book exists with this title
+        all_books = get_all_books(db_session)
+        books_with_title = [b for b in all_books if b.title == "The Great Gatsby"]
+        assert len(books_with_title) == 1
+
 
 class TestUpdateBook:
     def test_update_single_field(self, db_session):
