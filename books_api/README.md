@@ -21,4 +21,5 @@ books_api/
 - `GET /books` - List all books
 - `GET /books/{id}` - Get a book by ID
 - `POST /books` - Create a new book
+- `PATCH /books/{id}` - Partially update a book
 - `DELETE /books/{id}` - Delete a book
