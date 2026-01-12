@@ -31,7 +31,7 @@ Claude Code output
 ```txt
 I'll help you create CRUD operations for users and borrowings. Let me first explore the codebase to understand the existing structure.
 ...
-Read(/Users/jamesrea/psrc/claude-arena/claude-workloads/04-skills/README.md)
+Read(../claude-workloads/04-skills/README.md)
 ...
 I've created the CRUD operations for users and borrowings following the existing project structure. Here's what was implemented:
 

@@ -1,5 +1,5 @@
 [project]
-name = "claude-arena"
+name = "claude-exercises"
 version = "0.1.0"
 description = "Monorepo for Claude Code workloads"
 requires-python = ">=3.11"
