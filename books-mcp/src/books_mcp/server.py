@@ -2,9 +2,9 @@
 
 from mcp.server.fastmcp import FastMCP
 
-from books_mcp.data import BOOKS
+from books_mcp.db import BOOKS
 
-mcp = FastMCP("books")
+mcp = FastMCP("books", port=8080)
 
 
 @mcp.tool()
@@ -45,3 +45,7 @@ def search_books(query: str) -> list[dict]:
         for book in BOOKS
         if query_lower in book["title"].lower() or query_lower in book["author"].lower()
     ]
+
+
+if __name__ == "__main__":
+    mcp.run(transport="sse")

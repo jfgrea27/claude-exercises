@@ -1,4 +1,4 @@
-[
+BOOKS = [
     {
         "title": "To Kill a Mockingbird",
         "author": "Harper Lee",

@@ -10,9 +10,9 @@ install:
 serve:
     uvicorn books_api.server:app --reload --app-dir books-api/src
 
-# Run the MCP server
+# Run the MCP server (HTTP/SSE on port 8080)
 mcp:
-    mcp run books-mcp/src/books_mcp/server.py
+    uv run books-mcp/src/books_mcp/server.py
 
 # Run tests
 test *ARGS:
