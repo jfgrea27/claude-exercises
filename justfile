@@ -8,7 +8,7 @@ install:
 
 # Run the development server
 serve:
-    uvicorn books_api.server:app --reload
+    uvicorn books_api.server:app --reload --app-dir books-api/src
 
 # Run tests
 test *ARGS:
@@ -16,7 +16,7 @@ test *ARGS:
 
 # Run tests with coverage (fails if below 80%)
 test-cov:
-    pytest --cov=books_api/src/books_api --cov-report=term-missing --cov-fail-under=80
+    pytest --cov=books-api/src/books_api --cov-report=term-missing --cov-fail-under=80
 
 # Lint code
 lint:
@@ -29,7 +29,7 @@ fmt:
 
 # Type check
 typecheck:
-    mypy books_api
+    mypy books-api
 
 # Run all checks (lint, typecheck, test with coverage)
 check: lint typecheck test-cov

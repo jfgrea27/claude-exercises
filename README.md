@@ -1,6 +1,6 @@
 # Claude Arena
 
-The purpose of this repository is to document various exercises in Claude Code by modifying a simple [Books API](./books_api/) REST server written in Python.
+The purpose of this repository is to document various exercises in Claude Code by modifying a simple [Books API](./books-api/) REST server written in Python.
 
 ## Exercises
 
@@ -19,7 +19,7 @@ To replay an exercise, checkout the corresponding branch (e.g., `git checkout 00
 ## Books API Structure
 
 ```
-books_api/
+books-api/
 ├── src/
 │   └── books_api/       # Source code
 │       ├── db/          # Database connection and CRUD operations
