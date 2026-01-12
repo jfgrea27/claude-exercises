@@ -10,6 +10,10 @@ install:
 serve:
     uvicorn books_api.server:app --reload --app-dir books-api/src
 
+# Run the MCP server
+mcp:
+    mcp run books-mcp/src/books_mcp/server.py
+
 # Run tests
 test *ARGS:
     pytest {{ARGS}}

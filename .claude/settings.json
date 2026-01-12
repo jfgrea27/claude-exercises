@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "books": {
+      "command": "mcp",
+      "args": ["run", "./books-mcp/src/books_mcp/server.py"]
+    }
+  }
+}

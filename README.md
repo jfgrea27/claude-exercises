@@ -13,6 +13,7 @@ The following exercises are available in the `claude-exercises/` directory:
 | [02-plan-usage](./claude-exercises/02-plan-usage/) | Using plan mode for larger changes | `02-plan-usage` |
 | [03-subagents](./claude-exercises/03-subagents/) | Creating specialized subagents for task-specific workflows | `03-subagents` |
 | [04-skills](./claude-exercises/04-skills/) | Defining agent skills for context-aware assistance | `04-skills` |
+| [05-mcps](./claude-exercises/05-mcps/) | Creating and using MCP servers | `05-mcps` |
 
 To replay an exercise, checkout the corresponding branch (e.g., `git checkout 00-basic-usage`).
 

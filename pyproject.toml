@@ -3,10 +3,11 @@ name = "claude-exercises"
 version = "0.1.0"
 description = "Monorepo for Claude Code workloads"
 requires-python = ">=3.11"
-dependencies = ["books-api"]
+dependencies = ["books-api", "books-mcp"]
 
 [tool.uv.sources]
 books-api = { path = "books-api", editable = true }
+books-mcp = { path = "books-mcp", editable = true }
 
 [project.optional-dependencies]
 dev = [
