@@ -15,6 +15,7 @@ The following exercises are available in the `claude-exercises/` directory:
 | [04-skills](./claude-exercises/04-skills/)                     | Defining agent skills for context-aware assistance         | `04-skills`           |
 | [05-mcps](./claude-exercises/05-mcps/)                         | Creating and using MCP servers                             | `05-mcps`             |
 | [06-third-party-mcps](./claude-exercises/06-third-party-mcps/) | Using third-party MCPs like Atlassian Rovo for Jira        | `06-third-party-mcps` |
+| [07-context-management](./claude-exercises/07-context-management/) | Managing context window in long Claude Code sessions       | `07-context-management` |
 
 To replay an exercise, checkout the corresponding branch (e.g., `git checkout 00-basic-usage`).
 
