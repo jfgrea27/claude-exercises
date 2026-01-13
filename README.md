@@ -1,4 +1,4 @@
-# Claude Arena
+# Claude exercises
 
 The purpose of this repository is to document various exercises in Claude Code by modifying a simple [Books API](./books-api/) REST server written in Python.
 
