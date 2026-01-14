@@ -5,6 +5,7 @@ from books_api.db import (
     get_book_by_id,
     update_book,
 )
+from books_api.models import BookType
 
 
 class TestGetAllBooks:
@@ -149,3 +150,42 @@ class TestDeleteBook:
 
         assert get_book_by_id(db_session, book1.id) is None
         assert get_book_by_id(db_session, book2.id) is not None
+
+
+class TestBookType:
+    def test_default_book_type_is_unknown(self, db_session):
+        book = create_book(db_session, {"title": "Title", "author": "Author"})
+
+        assert book.book_type == BookType.unknown
+
+    def test_create_book_with_fiction_type(self, db_session):
+        book = create_book(
+            db_session,
+            {
+                "title": "Fiction Book",
+                "author": "Author",
+                "book_type": BookType.fiction,
+            },
+        )
+
+        assert book.book_type == BookType.fiction
+
+    def test_create_book_with_non_fiction_type(self, db_session):
+        book = create_book(
+            db_session,
+            {
+                "title": "Non-Fiction Book",
+                "author": "Author",
+                "book_type": BookType.non_fiction,
+            },
+        )
+
+        assert book.book_type == BookType.non_fiction
+
+    def test_update_book_type(self, db_session):
+        book = create_book(db_session, {"title": "Title", "author": "Author"})
+        assert book.book_type == BookType.unknown
+
+        updated = update_book(db_session, book, {"book_type": BookType.fiction})
+
+        assert updated.book_type == BookType.fiction
