@@ -143,3 +143,64 @@ class TestPatchBook:
         book = response.json()
         assert book["title"] == "Original"
         assert book["author"] == "Author"
+
+
+class TestBookType:
+    def test_get_book_returns_book_type(self, client):
+        create_response = client.post(
+            "/books", json={"title": "Test Book", "author": "Author"}
+        )
+        book_id = create_response.json()["id"]
+
+        response = client.get(f"/books/{book_id}")
+        assert response.status_code == 200
+        book = response.json()
+        assert "book_type" in book
+        assert book["book_type"] == "unknown"
+
+    def test_create_book_with_book_type(self, client):
+        response = client.post(
+            "/books",
+            json={"title": "Fiction Book", "author": "Author", "book_type": "fiction"},
+        )
+        assert response.status_code == 201
+        book = response.json()
+        assert book["book_type"] == "fiction"
+
+    def test_create_book_without_book_type_defaults_to_unknown(self, client):
+        response = client.post(
+            "/books",
+            json={"title": "No Type Book", "author": "Author"},
+        )
+        assert response.status_code == 201
+        book = response.json()
+        assert book["book_type"] == "unknown"
+
+    def test_patch_book_type(self, client):
+        create_response = client.post(
+            "/books", json={"title": "Test Book", "author": "Author"}
+        )
+        book_id = create_response.json()["id"]
+        assert create_response.json()["book_type"] == "unknown"
+
+        response = client.patch(f"/books/{book_id}", json={"book_type": "non_fiction"})
+        assert response.status_code == 200
+        book = response.json()
+        assert book["book_type"] == "non_fiction"
+
+    def test_get_books_returns_book_type_in_list(self, client):
+        client.post(
+            "/books",
+            json={"title": "Book 1", "author": "Author", "book_type": "fiction"},
+        )
+        client.post(
+            "/books",
+            json={"title": "Book 2", "author": "Author", "book_type": "non_fiction"},
+        )
+
+        response = client.get("/books")
+        assert response.status_code == 200
+        books = response.json()
+        assert len(books) == 2
+        book_types = {b["book_type"] for b in books}
+        assert book_types == {"fiction", "non_fiction"}
