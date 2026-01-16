@@ -5,6 +5,7 @@ from books_api.db import (
     get_book_by_id,
     update_book,
 )
+from books_api.models.books import BookType
 
 
 class TestGetAllBooks:
@@ -68,6 +69,19 @@ class TestCreateBook:
         assert fetched is not None
         assert fetched.title == "Title"
 
+    def test_create_book_with_book_type(self, db_session):
+        book = create_book(
+            db_session,
+            {"title": "Novel", "author": "Author", "book_type": BookType.fiction},
+        )
+
+        assert book.book_type == BookType.fiction
+
+    def test_create_book_default_book_type(self, db_session):
+        book = create_book(db_session, {"title": "Title", "author": "Author"})
+
+        assert book.book_type == BookType.unknown
+
 
 class TestUpdateBook:
     def test_update_single_field(self, db_session):
@@ -105,6 +119,21 @@ class TestUpdateBook:
 
         fetched = get_book_by_id(db_session, book.id)
         assert fetched.title == "Updated"
+
+    def test_update_book_type(self, db_session):
+        book = create_book(db_session, {"title": "Title", "author": "Author"})
+        assert book.book_type == BookType.unknown
+
+        updated = update_book(
+            db_session,
+            book,
+            {"title": "Title", "author": "Author", "book_type": BookType.fiction},
+        )
+
+        assert updated.book_type == BookType.fiction
+
+        fetched = get_book_by_id(db_session, book.id)
+        assert fetched.book_type == BookType.fiction
 
 
 class TestDeleteBook:
