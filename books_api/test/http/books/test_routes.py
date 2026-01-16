@@ -32,6 +32,18 @@ class TestGetBook:
         assert book["id"] == book_id
         assert book["title"] == "Test Book"
         assert book["author"] == "Test Author"
+        assert book["book_type"] == "unknown"
+
+    def test_get_book_returns_book_type(self, client):
+        create_response = client.post(
+            "/books",
+            json={"title": "Fiction Book", "author": "Author", "book_type": "fiction"},
+        )
+        book_id = create_response.json()["id"]
+
+        response = client.get(f"/books/{book_id}")
+        assert response.status_code == 200
+        assert response.json()["book_type"] == "fiction"
 
 
 class TestCreateBook:
@@ -63,6 +75,25 @@ class TestCreateBook:
         assert book["id"] is not None
         assert book["description"] is None
         assert book["year"] is None
+        assert book["book_type"] == "unknown"
+
+    def test_create_book_with_book_type_fiction(self, client):
+        response = client.post(
+            "/books",
+            json={"title": "Novel", "author": "Author", "book_type": "fiction"},
+        )
+        assert response.status_code == 201
+        book = response.json()
+        assert book["book_type"] == "fiction"
+
+    def test_create_book_with_book_type_non_fiction(self, client):
+        response = client.post(
+            "/books",
+            json={"title": "Biography", "author": "Author", "book_type": "non_fiction"},
+        )
+        assert response.status_code == 201
+        book = response.json()
+        assert book["book_type"] == "non_fiction"
 
 
 class TestDeleteBook:
@@ -83,12 +114,8 @@ class TestDeleteBook:
         assert response.status_code == 404
 
     def test_delete_only_affects_target(self, client):
-        response1 = client.post(
-            "/books", json={"title": "Book 1", "author": "Author"}
-        )
-        response2 = client.post(
-            "/books", json={"title": "Book 2", "author": "Author"}
-        )
+        response1 = client.post("/books", json={"title": "Book 1", "author": "Author"})
+        response2 = client.post("/books", json={"title": "Book 2", "author": "Author"})
         book1_id = response1.json()["id"]
         book2_id = response2.json()["id"]
 
