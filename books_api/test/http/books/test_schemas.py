@@ -1,5 +1,6 @@
 import pytest
 from books_api.http.books.schemas import BookCreate, BookResponse
+from books_api.models.books import BookType
 from pydantic import ValidationError
 
 
@@ -10,6 +11,7 @@ class TestBookCreate:
         assert book.author == "Author"
         assert book.description is None
         assert book.year is None
+        assert book.book_type == BookType.unknown
 
     def test_valid_full(self):
         book = BookCreate(
@@ -39,6 +41,24 @@ class TestBookCreate:
         book = BookCreate(title="Title", author="Author", year="2024")
         assert book.year == 2024
 
+    def test_book_type_fiction(self):
+        book = BookCreate(title="Title", author="Author", book_type=BookType.fiction)
+        assert book.book_type == BookType.fiction
+
+    def test_book_type_non_fiction(self):
+        book = BookCreate(
+            title="Title", author="Author", book_type=BookType.non_fiction
+        )
+        assert book.book_type == BookType.non_fiction
+
+    def test_book_type_from_string(self):
+        book = BookCreate(title="Title", author="Author", book_type="fiction")
+        assert book.book_type == BookType.fiction
+
+    def test_book_type_invalid_value(self):
+        with pytest.raises(ValidationError):
+            BookCreate(title="Title", author="Author", book_type="invalid")
+
 
 class TestBookResponse:
     def test_valid_response(self):
@@ -58,3 +78,12 @@ class TestBookResponse:
 
     def test_from_attributes_config(self):
         assert BookResponse.model_config["from_attributes"] is True
+
+    def test_response_with_book_type(self):
+        book = BookResponse(
+            id=1,
+            title="Title",
+            author="Author",
+            book_type=BookType.fiction,
+        )
+        assert book.book_type == BookType.fiction
